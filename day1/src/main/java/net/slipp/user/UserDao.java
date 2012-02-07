@@ -102,7 +102,7 @@ public class UserDao {
         try {
             StringBuffer findQuery = new StringBuffer();
             findQuery.append("SELECT ");
-            findQuery.append("password, name, email ");
+            findQuery.append("userId, password, name, email ");
             findQuery.append("FROM USERS ");
             findQuery.append("WHERE userid=? ");
 
@@ -114,12 +114,7 @@ public class UserDao {
 
             User user = null;
             if (rs.next()) {
-                user = new User();
-
-                user.setUserId(userId);
-                user.setPassword(rs.getString("password"));
-                user.setName(rs.getString("name"));
-                user.setEmail(rs.getString("email"));
+                user = new User(rs.getString("userId"), rs.getString("password"), rs.getString("name"), rs.getString("email"));
             }
 
             return user;
@@ -156,12 +151,7 @@ public class UserDao {
 
             List<User> userList = new ArrayList<User>();
             while (rs.next()) {
-                User user = new User();
-                user.setUserId(rs.getString("userid"));
-                user.setPassword(rs.getString("password"));
-                user.setName(rs.getString("name"));
-                user.setEmail(rs.getString("email"));
-
+                User user = new User(rs.getString("userId"), rs.getString("password"), rs.getString("name"), rs.getString("email"));
                 userList.add(user);                
             }
 
