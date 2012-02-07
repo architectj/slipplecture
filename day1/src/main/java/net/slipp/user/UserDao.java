@@ -15,7 +15,7 @@ public class UserDao {
         PreparedStatement pstmt = null;
         try {
             StringBuffer insertQuery = new StringBuffer();
-            insertQuery.append("INSERT INTO USERINFO VALUES ");
+            insertQuery.append("INSERT INTO USERS VALUES ");
             insertQuery.append("(?, ?, ?, ?)");
 
             con = ConnectionManager.getConnection();
@@ -47,7 +47,7 @@ public class UserDao {
         PreparedStatement pstmt = null;
         try {
             StringBuffer updateQuery = new StringBuffer();
-            updateQuery.append("UPDATE USERINFO SET ");
+            updateQuery.append("UPDATE USERS SET ");
             updateQuery.append("password=?, name=?, email=? ");
             updateQuery.append("WHERE userid=? ");
 
@@ -80,7 +80,7 @@ public class UserDao {
         PreparedStatement pstmt = null;
         try {
             StringBuffer removeQuery = new StringBuffer();
-            removeQuery.append("DELETE FROM USERINFO ");
+            removeQuery.append("DELETE FROM USERS ");
             removeQuery.append("WHERE userid=? ");
 
             con = ConnectionManager.getConnection();
@@ -112,7 +112,7 @@ public class UserDao {
             StringBuffer findQuery = new StringBuffer();
             findQuery.append("SELECT ");
             findQuery.append("password, name, email ");
-            findQuery.append("FROM USERINFO ");
+            findQuery.append("FROM USERS ");
             findQuery.append("WHERE userid=? ");
 
             con = ConnectionManager.getConnection();
@@ -158,7 +158,7 @@ public class UserDao {
             StringBuffer findQuery = new StringBuffer();
             findQuery.append("SELECT ");
             findQuery.append("userid, password, name, email ");
-            findQuery.append("FROM USERINFO");
+            findQuery.append("FROM USERS");
 
             con = ConnectionManager.getConnection();
             pstmt = con.prepareStatement(findQuery.toString(),
@@ -195,16 +195,13 @@ public class UserDao {
         }
     }
 
-    /**
-     * ÀÎÀÚ·Î Àü´ÞµÇ´Â ¾ÆÀÌµð¸¦ °¡Áö´Â »ç¿ëÀÚ°¡ Á¸ÀçÇÏ´ÂÁöÀÇ À¯¹«¸¦ ÆÇº°.
-     */
     public boolean existedUser(String userId) throws SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
             StringBuffer existedQuery = new StringBuffer();
-            existedQuery.append("SELECT count(*) FROM USERINFO ");
+            existedQuery.append("SELECT count(*) FROM USERS ");
             existedQuery.append("WHERE userid=? ");
 
             con = ConnectionManager.getConnection();

@@ -1,93 +1,54 @@
-<%@page contentType="text/html; charset=euc-kr" %>
-<%@page import="net.javajigi.user.*" %>
-<%@ include file="loginCheck.jsp" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
+%><%@page import="net.slipp.user.*" 
+%><%@ include file="/include/tags.jspf" 
+%><%@ include file="loginCheck.jsp" %>
 <%
 	String userId = request.getParameter("userId");
-	
-	UserManager manager = UserManager.instance();
-	User user = manager.findUser(userId);
-%>
+	UserService service = new UserService();
+	User user = service.findUser(userId);
+%><!DOCTYPE html>
 <html>
-<head>
-<title>Chapter1 »ç¿ëÀÚ °ü¸®</title>
-<meta http-equiv="Content-Type" content="text/html; charset=euc-kr">
-<link rel=stylesheet href="../css/user.css" type="text/css">
-<script language="JavaScript">
-function userModify() {
-	f.action = "user_modify_action.jsp";
-	f.submit();
-}
+  <head>
+    <title>ì‚¬ìš©ì ê´€ë¦¬</title>
+    <%@ include file="/include/header.jspf" %>
+  </head>
+  <body>
+        <%@ include file="/include/top.jspf" %>
 
-function userList() {
-	f.action = "user_list.jsp";
-	f.submit();
-}
-</script>
-</head>
-<body bgcolor=#FFFFFF text=#000000 leftmargin=0 topmargin=0 marginwidth=0 marginheight=0>
-<br>
-<table width=780 border=0 cellpadding=0 cellspacing=0>
-	<tr>
-	  <td width="20"></td>
-	  <td>
-  <!--contents-->
-	  <table width=590 border=0 cellpadding=0 cellspacing=0>
-		  <tr>
-			<td bgcolor="f4f4f4" height="22">&nbsp;&nbsp;<b>»ç¿ëÀÚ °ü¸® - »ç¿ëÀÚ Ãß°¡</b></td>
-		  </tr>
-	  </table>  
-	  <br>
-	  
-	  <!-- write Form  -->
-	  <form name="f" method="post">
-	  <input type="hidden" name="userId" value="<%= user.getUserId() %>"/>	  
-	  <table border="0" cellpadding="0" cellspacing="1" width="590" bgcolor="BBBBBB">
-		  <tr>
-			<td width=100 align=center bgcolor="E6ECDE" height="22">»ç¿ëÀÚ ¾ÆÀÌµğ</td>
-			<td width=490 bgcolor="ffffff" style="padding-left:10">
-				<%= user.getUserId() %>
-			</td>
-		  </tr>
-		  <tr>
-			<td width=100 align=center bgcolor="E6ECDE" height="22">ºñ¹Ğ¹øÈ£</td>
-			<td width=490 bgcolor="ffffff" style="padding-left:10">
-				<input type="password" style="width:150" name="password" value="<%= user.getPassword() %>">
-			</td>
-		  </tr>
-		  <tr>
-			<td width=100 align=center bgcolor="E6ECDE" height="22">ºñ¹Ğ¹øÈ£ È®ÀÎ</td>
-			<td width=490 bgcolor="ffffff" style="padding-left:10">
-				<input type="password" style="width:150" name="password2" value="<%= user.getPassword() %>">
-			</td>
-		  </tr>
-		  <tr>
-			<td width=100 align=center bgcolor="E6ECDE" height="22">ÀÌ¸§</td>
-			<td width=490 bgcolor="ffffff" style="padding-left:10">
-				<input type="text" style="width:240" name="name" value="<%= user.getName() %>">
-			</td>
-		  </tr>
-		  <tr>
-			<td width=100 align=center bgcolor="E6ECDE" height="22">ÀÌ¸ŞÀÏ ÁÖ¼Ò</td>
-			<td width=490 bgcolor="ffffff" style="padding-left:10">
-				<input type="text" style="width:240" name="email" value="<%= user.getEmail() %>">
-			</td>
-		  </tr>		  
-	  </table>
-	  </form>
-	  <br>
-	  
-	  <table width=590 border=0 cellpadding=0 cellspacing=0>
-		  <tr>
-			<td align=center>
-			<input type="button" value="¼öÁ¤" onClick="userModify()"> &nbsp;
-			<input type="button" value="¸ñ·Ï" onClick="userList()">
-			</td>
-		  </tr>
-	  </table>
-
-	  </td>
-	</tr>
-</table>  
-
-</body>
+		<c:set var="user" value="<%= user %>"  />       
+        <div id="main">
+		  <form name="userForm" method="post" action="updateAction.jsp">
+		  <input type="hidden" name="userId" value="${user.userId}" />
+		  <table>
+			  <tr>
+				<td>ì‚¬ìš©ì ì•„ì´ë””</td>
+				<td>
+					${user.userId}
+				</td>
+			  </tr>
+			  <tr>
+				<td>ë¹„ë°€ë²ˆí˜¸</td>
+				<td>
+					<input type="password" name="password">
+				</td>
+			  </tr>
+			  <tr>
+				<td>ì´ë¦„</td>
+				<td>
+					<input type="text" name="name" value="${user.name}">
+				</td>
+			  </tr>
+			  <tr>
+				<td>ì´ë©”ì¼</td>
+				<td>
+					<input type="text" name="email" value="${user.email}">
+				</td>
+			  </tr>			  
+		  </table>
+		  <input type="submit" value="ìˆ˜ì •í•˜ê¸°" />
+		  </form>
+        </div>
+        
+        <%@ include file="/include/footer.jspf" %> 
+  </body>
 </html>

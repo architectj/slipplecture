@@ -14,7 +14,7 @@ try {
 	session.setAttribute("userId", userId);
 
 	//모든 작업 완료후 이동할 페이지를 결정.
-	response.sendRedirect("/user/list.jsp");
+	response.sendRedirect("index.jsp");
 } catch (Exception e) {
 %>
 <!--

@@ -3,10 +3,10 @@
 <html>
   <head>
     <title>사용자 관리</title>
-    <%@ include file="/include/header.jsp" %>
+    <%@ include file="/include/header.jspf" %>
   </head>
   <body>
-        <%@ include file="/include/top.jsp" %>
+        <%@ include file="/include/top.jspf" %>
         
         <div id="main">
 		  <form name="userForm" method="post" action="loginAction.jsp">
@@ -28,6 +28,6 @@
 		  </form>
         </div>
         
-        <%@ include file="/include/footer.jsp" %> 
+        <%@ include file="/include/footer.jspf" %> 
   </body>
 </html>

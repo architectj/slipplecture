@@ -101,6 +101,10 @@ body {
     padding: 20px;
 }
 
+#main a {
+    color: #fff;
+}
+
 /** Post **/
 
 .post .post-title {
