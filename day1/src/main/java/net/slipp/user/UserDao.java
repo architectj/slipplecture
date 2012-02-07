@@ -27,9 +27,6 @@ public class UserDao {
 
             int result = pstmt.executeUpdate();
 
-            pstmt.close();
-            con.close();
-
             return result;
         } finally {
             if (pstmt != null) {
@@ -60,9 +57,6 @@ public class UserDao {
 
             int result = pstmt.executeUpdate();
 
-            pstmt.close();
-            con.close();
-
             return result;
         } finally {
             if (pstmt != null) {
@@ -88,9 +82,6 @@ public class UserDao {
             pstmt.setString(1, userId);
 
             int result = pstmt.executeUpdate();
-
-            pstmt.close();
-            con.close();
 
             return result;
         } finally {
@@ -130,10 +121,6 @@ public class UserDao {
                 user.setName(rs.getString("name"));
                 user.setEmail(rs.getString("email"));
             }
-
-            rs.close();
-            pstmt.close();
-            con.close();
 
             return user;
         } finally {
@@ -177,9 +164,6 @@ public class UserDao {
 
                 userList.add(user);                
             }
-            rs.close();
-            pstmt.close();
-            con.close();
 
             return userList;
         } finally {
@@ -214,10 +198,6 @@ public class UserDao {
             if (rs.next()) {
                 count = rs.getInt(1);
             }
-
-            rs.close();
-            pstmt.close();
-            con.close();
 
             if (count == 1) {
                 return true;
