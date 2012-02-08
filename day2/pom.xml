@@ -2,15 +2,46 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.slipp</groupId>
-	<artifactId>myweb1</artifactId>
+	<artifactId>myweb2</artifactId>
 	<version>1.0.0</version>
 	<packaging>war</packaging>
 
 	<properties>
 		<org.slf4j.version>1.6.4</org.slf4j.version>
+		<org.springframework-version>3.1.0.RELEASE</org.springframework-version>
 	</properties>
 
 	<dependencies>
+		<!-- Spring Framework -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>	
+		
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib-nodep</artifactId>
+			<version>2.2</version>
+		</dependency>		
+		
+		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+			<version>1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+			<version>1.4</version>
+		</dependency>		
+	
 		<!-- Log - slf4j -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
