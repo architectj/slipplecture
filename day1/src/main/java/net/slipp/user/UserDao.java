@@ -10,7 +10,7 @@ import java.util.List;
 import net.slipp.support.jdbc.ConnectionManager;
 
 public class UserDao {
-    public int create(User user) throws SQLException {
+    public void create(User user) throws SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
@@ -25,9 +25,7 @@ public class UserDao {
             pstmt.setString(3, user.getName());
             pstmt.setString(4, user.getEmail());
 
-            int result = pstmt.executeUpdate();
-
-            return result;
+            pstmt.executeUpdate();
         } finally {
             if (pstmt != null) {
                 pstmt.close();
@@ -39,7 +37,7 @@ public class UserDao {
         }
     }
 
-    public int update(User user) throws SQLException {
+    public void update(User user) throws SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
@@ -55,9 +53,7 @@ public class UserDao {
             pstmt.setString(3, user.getEmail());
             pstmt.setString(4, user.getUserId());
 
-            int result = pstmt.executeUpdate();
-
-            return result;
+            pstmt.executeUpdate();
         } finally {
             if (pstmt != null) {
                 pstmt.close();
@@ -69,7 +65,7 @@ public class UserDao {
         }
     }
 
-    public int remove(String userId) throws SQLException {
+    public void remove(String userId) throws SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
@@ -81,9 +77,7 @@ public class UserDao {
             pstmt = con.prepareStatement(removeQuery.toString());
             pstmt.setString(1, userId);
 
-            int result = pstmt.executeUpdate();
-
-            return result;
+            pstmt.executeUpdate();
         } finally {
             if (pstmt != null) {
                 pstmt.close();
@@ -156,44 +150,6 @@ public class UserDao {
             }
 
             return userList;
-        } finally {
-            if (rs != null) {
-                rs.close();
-            }
-            if (pstmt != null) {
-                pstmt.close();
-            }
-            if (con != null) {
-                con.close();
-            }
-        }
-    }
-
-    public boolean existedUser(String userId) throws SQLException {
-        Connection con = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            StringBuffer existedQuery = new StringBuffer();
-            existedQuery.append("SELECT count(*) FROM USERS ");
-            existedQuery.append("WHERE userid=? ");
-
-            con = ConnectionManager.getConnection();
-            pstmt = con.prepareStatement(existedQuery.toString());
-            pstmt.setString(1, userId);
-
-            rs = pstmt.executeQuery();
-
-            int count = 0;
-            if (rs.next()) {
-                count = rs.getInt(1);
-            }
-
-            if (count == 1) {
-                return true;
-            } else {
-                return false;
-            }
         } finally {
             if (rs != null) {
                 rs.close();

@@ -7,20 +7,20 @@ public class UserService {
 	public UserService() {
 	}
 
-	public int create(User user) throws SQLException, ExistedUserException {
-		if (getUserDAO().existedUser(user.getUserId())) {
+	public void create(User user) throws SQLException, ExistedUserException {
+		if (findUser(user.getUserId()) != null) {
 			throw new ExistedUserException(user.getUserId() + "는 이미 존재하는 아이디입니다.");
 		}
 
-		return getUserDAO().create(user);
+		getUserDAO().create(user);
 	}
 
-	public int update(User user) throws SQLException {
-		return getUserDAO().update(user);
+	public void update(User user) throws SQLException {
+		getUserDAO().update(user);
 	}
 
-	public int remove(String userId) throws SQLException {
-		return getUserDAO().remove(userId);
+	public void remove(String userId) throws SQLException {
+		getUserDAO().remove(userId);
 	}
 
 	public User findUser(String userId) throws SQLException {
