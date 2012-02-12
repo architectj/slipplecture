@@ -3,6 +3,9 @@ package net.slipp.user;
 import java.sql.SQLException;
 import java.util.List;
 
+import net.slipp.user.event.UserLoginEvent;
+import net.slipp.user.event.UserLoginEventDao;
+
 public class UserService {
 	public UserService() {
 	}
@@ -33,9 +36,16 @@ public class UserService {
 
 	public boolean login(String userId, String password) throws SQLException, PasswordMismatchException {
 		User user = findUser(userId);
+		UserLoginEvent userLoginEvent;
+		UserLoginEventDao eventDao = new UserLoginEventDao();
 		if (!user.isMatchPassword(password)) {
+		    userLoginEvent = new UserLoginEvent(userId, password, false);
+		    eventDao.create(userLoginEvent);
 			throw new PasswordMismatchException("비밀번호가 일치하지 않습니다.");
 		}
+		userLoginEvent = new UserLoginEvent(userId, password, true);
+        eventDao.create(userLoginEvent);
+		
 		return true;
 	}
 

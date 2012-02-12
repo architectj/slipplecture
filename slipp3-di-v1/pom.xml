@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.slipp</groupId>
-	<artifactId>myweb2</artifactId>
+	<artifactId>slipp3-di-v1</artifactId>
 	<version>1.0.0</version>
 	<packaging>war</packaging>
 
