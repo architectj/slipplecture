@@ -4,34 +4,31 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class UserService {
-    private UserDao userDao;
-    
-    public void setUserDao(UserDao userDao) {
-        this.userDao = userDao;
-    }
-    
+	public UserService() {
+	}
+
 	public void create(User user) throws SQLException, ExistedUserException {
 		if (findUser(user.getUserId()) != null) {
 			throw new ExistedUserException(user.getUserId() + "는 이미 존재하는 아이디입니다.");
 		}
 
-		userDao.create(user);
+		getUserDAO().create(user);
 	}
 
 	public void update(User user) throws SQLException {
-		userDao.update(user);
+		getUserDAO().update(user);
 	}
 
 	public void remove(String userId) throws SQLException {
-		userDao.remove(userId);
+		getUserDAO().remove(userId);
 	}
 
 	public User findUser(String userId) throws SQLException {
-		return userDao.findUser(userId);
+		return getUserDAO().findUser(userId);
 	}
 
 	public List<User> findUserList() throws SQLException {
-		return userDao.findUserList();
+		return getUserDAO().findUserList();
 	}
 
 	public boolean login(String userId, String password) throws SQLException, PasswordMismatchException {
@@ -40,5 +37,9 @@ public class UserService {
 			throw new PasswordMismatchException("비밀번호가 일치하지 않습니다.");
 		}
 		return true;
+	}
+
+	private UserDao getUserDAO() {
+		return new UserDao();
 	}
 }
