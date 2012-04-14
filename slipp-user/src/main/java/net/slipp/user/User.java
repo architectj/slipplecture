@@ -1,6 +1,11 @@
 package net.slipp.user;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class User {
+	@Id
 	private String userId = null;
 	private String password = null;
 	private String name = null;

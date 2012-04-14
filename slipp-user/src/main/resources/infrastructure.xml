@@ -14,18 +14,13 @@
 		p:persistenceUnitName="slipp.qna" p:dataSource-ref="dataSource"
 		p:jpaDialect-ref="jpaDialect" />		
 		
-	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-		<property name="entityManagerFactory" ref="entityManagerFactory" />
-	</bean>
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
+	   p:entityManagerFactory-ref="entityManagerFactory" />
 	
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
-		destroy-method="close">
-		<property name="driverClassName" value="org.h2.Driver" />
-		<property name="url" value="jdbc:h2:~/slipp-qna" />
-		<!-- <property name="url" value="jdbc:h2:tcp://localhost/~/slipp-qna" /> -->
-		<property name="username" value="sa" />
-		<property name="password" value="" />
-	</bean>
+	   p:driverClassName="org.h2.Driver" p:url="jdbc:h2:~/slipp-qna"
+	   p:username="sa" p:password=""
+	   destroy-method="close" />
 
 	<tx:annotation-driven transaction-manager="transactionManager" />
 </beans>
