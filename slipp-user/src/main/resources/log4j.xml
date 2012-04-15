@@ -10,6 +10,14 @@
 	<logger name="net.slipp">
 		<level value="DEBUG" />
 	</logger>
+	
+    <logger name="org.hibernate">
+        <level value="WARN" />
+    </logger>
+
+    <logger name="org.hibernate.SQL">
+        <level value="DEBUG" />
+    </logger>	
 
 	<root>
 		<level value="INFO" />
