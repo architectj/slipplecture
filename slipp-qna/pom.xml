@@ -11,6 +11,7 @@
 		<jpa.version>2.0.0</jpa.version>
 		<hibernate.version>3.5.6-Final</hibernate.version>		
 		<org.springframework.version>3.1.1.RELEASE</org.springframework.version>
+		<org.springframework.security.version>3.1.0.RELEASE</org.springframework.security.version>
 		<jetty.version>6.1.22</jetty.version>
 	</properties>
 
@@ -110,8 +111,22 @@
 		    <groupId>org.springframework</groupId>
 		    <artifactId>spring-test</artifactId>
 	        <version>${org.springframework.version}</version>
-	    </dependency>			
-		
+	    </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${org.springframework.security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${org.springframework.security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
+            <version>${org.springframework.security.version}</version>
+        </dependency>
 		<dependency>
 			<groupId>cglib</groupId>
 			<artifactId>cglib-nodep</artifactId>

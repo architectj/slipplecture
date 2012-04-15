@@ -17,7 +17,12 @@
             </div>
             <ul id="tools">
                 <li>
-                    <a href="/user/login/form">Log in</a>
+                    <sec:authorize access="!hasRole('ROLE_USER')">
+                    <a href="/security/form">로그인</a>
+                    </sec:authorize>
+                    <sec:authorize access="hasRole('ROLE_USER')">
+                    <a href="/security/logout">로그아웃</a>
+                    </sec:authorize>                    
                 </li>
             </ul>
             <div id="title">
