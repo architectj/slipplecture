@@ -8,4 +8,7 @@
 	<decorator name="default" page="default.jsp">
 		<pattern>/*</pattern>
 	</decorator>
+
+    <decorator name="mobile_default" page="mobile/mobile_default.jsp">
+	</decorator>
 </decorators>

@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import net.slipp.domain.qna.QnaService;
 import net.slipp.domain.qna.Question;
 import net.slipp.domain.user.User;
+import net.slipp.support.web.argumentresolver.LoginUser;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,22 +34,14 @@ public class QnaController {
 	
 	@RequestMapping("/form")
 	public String createForm(HttpServletRequest request, Model model) {
-		User user = getLoginUser(request);
-		if (user == null) {
-			return "redirect:/user/login/form";
-		}
 		model.addAttribute(new Question());
 		return "qna/form";
 	}
 	
 	@RequestMapping(value="", method=RequestMethod.POST)
-	public String create(HttpServletRequest request, Question question) {
+	public String create(@LoginUser User user, HttpServletRequest request, Question question) {
 		logger.debug("Question : {}", question);
 		
-		User user = getLoginUser(request);
-		if (user == null) {
-			return "redirect:/user/login/form";
-		}
 		qnaService.createQuestion(user, question);
 		return "redirect:/qna";
 	}
@@ -64,12 +57,8 @@ public class QnaController {
 	}
 	
 	@RequestMapping(value="", method=RequestMethod.PUT)
-	public String update(HttpServletRequest request, Question question) {
+	public String update(@LoginUser User user, Question question) {
 		logger.debug("Question : {}", question);
-		User user = getLoginUser(request);
-		if (user == null) {
-			return "redirect:/user/login/form";
-		}
 		qnaService.updateQuestion(user, question);
 		return "redirect:/qna";
 	}

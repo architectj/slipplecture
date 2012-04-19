@@ -8,7 +8,10 @@
     <http pattern="/resources*/**" security="none"/>
     
     <http use-expressions="true">
-        <intercept-url pattern="/qna/**" access="hasRole('ROLE_USER')"/>
+        <intercept-url pattern="/qna/form" access="hasRole('ROLE_USER')"/>
+        <intercept-url pattern="/qna" method="POST" access="hasRole('ROLE_USER')"/>
+        <intercept-url pattern="/qna/*/form" access="hasRole('ROLE_USER')"/>
+        <intercept-url pattern="/qna" method="PUT" access="hasRole('ROLE_USER')"/>
     
         <intercept-url pattern="/**" access="permitAll" />
 
@@ -27,6 +30,8 @@
     
     <beans:bean id="authenticationProvider" class="net.slipp.support.security.SlippAuthenticationProvider" />
     
-    <beans:bean id="userDetailsService" class="net.slipp.support.security.SlippUserDetailsService"/>    
+    <beans:bean id="userDetailsService" class="net.slipp.support.security.SlippUserDetailsService"/>
+    
+    <beans:bean id="sessionService" class="net.slipp.support.security.SessionService" />   
 </beans:beans>
 
