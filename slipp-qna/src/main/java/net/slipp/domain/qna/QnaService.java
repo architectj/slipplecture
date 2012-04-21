@@ -6,6 +6,8 @@ import net.slipp.domain.user.User;
 import net.slipp.repository.qna.QuestionRepository;
 import net.slipp.repository.qna.TagRepository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +36,10 @@ public class QnaService {
 	
 	public Iterable<Question> findsQuestion() {
 		return questionRepository.findAll();
+	}
+	
+	public Page<Question> findsQuestion(Pageable page) {
+		return questionRepository.findAll(page);
 	}
 	
 	public Question findByQuestionId(Long id) {

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%><%@ include file="/WEB-INF/jsp/include/tags.jspf"%>
+	pageEncoding="UTF-8"%><%@ include file="/WEB-INF/jsp/include/tags.jspf"%><%@
+taglib prefix="qna" tagdir="/WEB-INF/tags/qnas"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,7 +17,7 @@
 							<td width="100">글쓴이</td>
 							<td width="150">생성일</td>
 						</tr>
-						<c:forEach items="${questions}" var="each">
+						<c:forEach items="${questions.content}" var="each">
 							<tr>
 								<td width="400"><a href="/qna/${each.questionId}">${each.title}</a></td>
 								<td width="100">${each.writerName}</td>
@@ -24,18 +25,29 @@
 										pattern="yyyy-MM-dd hh:mm:ss" value="${each.createdDate}" /></td>
 							</tr>
 						</c:forEach>
+						<tr>
+						  <td colspan="3">
+					        <!--페이지영역 -->
+					        <div class="pageBox">
+					            <sl:pager
+					                prefixURI="/qna"
+					                pageHtml='<a href="{url}">{page}</a>'
+					                currentPageHtml='<a href="#" class="active">{page}</a>'
+					                pageSeparator=" "
+					                pagesWrapHtmlHead='<span class="paging">'
+					                pagesWrapHtmlTail='</span>'
+					                prevGroupHtml=' <a href="{url}" class="page_prev">이전</a> '
+					                nextGroupHtml=' <a href="{url}" class="page_next">다음</a> '
+					                pageGroupSize="10"
+					                page="${questions}" />
+					        </div>
+					        <!--페이지영역 -->						  
+						  </td>
+						</tr>
 					</table>
 				</td>
 				<td height="400" valign="top">
-					<table>
-						<tr>	
-							<td>			
-							<c:forEach items="${tags}" var="each">
-								${each.name} X ${each.taggedCount} <br/>
-							</c:forEach>
-							</td>
-						</tr>
-					</table>
+					<qna:tags tags="${tags}"/>
 				</td>
 			</tr>
 		</table>
