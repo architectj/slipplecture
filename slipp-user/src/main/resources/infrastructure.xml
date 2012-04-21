@@ -13,7 +13,7 @@
 		p:persistenceXmlLocation="classpath:META-INF/persistence.xml"
 		p:persistenceUnitName="slipp.qna" p:dataSource-ref="dataSource"
 		p:jpaDialect-ref="jpaDialect" />		
-		
+
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
 	   p:entityManagerFactory-ref="entityManagerFactory" />
 	
