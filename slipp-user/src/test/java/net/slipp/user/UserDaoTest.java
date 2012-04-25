@@ -11,7 +11,7 @@ public class UserDaoTest {
 	
 	@Before
 	public void setup() {
-		dut = new UserDao();
+		dut = new JdbcUserDao();
 	}
 
 	@Test

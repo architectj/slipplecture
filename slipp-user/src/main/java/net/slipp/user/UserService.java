@@ -8,13 +8,18 @@ import org.slf4j.LoggerFactory;
 
 public class UserService {
 	private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+	private UserDao userDao;
 	
 	public UserService() {
 	}
 
-	public void create(User user) throws SQLException, ExistedUserException {
+	public void create(User user) throws SQLException, ExistedUserException, ExceedAdminUserException {
 		if (findUser(user.getUserId()) != null) {
 			throw new ExistedUserException(user.getUserId() + "는 이미 존재하는 아이디입니다.");
+		}
+		
+		if (getUserDAO().countAdminUser() >= 3) {
+			throw new ExceedAdminUserException();
 		}
 
 		getUserDAO().create(user);
@@ -46,6 +51,10 @@ public class UserService {
 	}
 
 	private UserDao getUserDAO() {
-		return new UserDao();
+		return userDao;
+	}
+
+	public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
 	}
 }
