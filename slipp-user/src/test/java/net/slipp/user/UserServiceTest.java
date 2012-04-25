@@ -1,25 +1,35 @@
 package net.slipp.user;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import java.sql.SQLException;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class UserServiceTest {
 	private UserService userService;
+	
+	@Mock
+	UserDao userDao;
 
 	@Before
 	public void setUp() throws Exception {
 		userService = new UserService();
-		UserDao userDao = new MockUserDao();
 		userService.setUserDao(userDao);
 	}
 	
 	@Test
 	public void create_normal() throws Exception {
+		when(userDao.findUser("userId")).thenReturn(null);
+		when(userDao.countAdminUser()).thenReturn(1);
 		userService.create(createUser("userId"));
+		verify(userDao).create(createUser("userId"));
 	}
 
 	private User createUser(String userId) {
@@ -30,16 +40,15 @@ public class UserServiceTest {
 	
 	@Test(expected=ExistedUserException.class)
 	public void create_existedUser() throws Exception {
-		userService.create(createUser("sanjigi"));
+		when(userDao.findUser("sanjigi")).thenReturn(createUser("sanjigi"));
 		userService.create(createUser("sanjigi"));
 	}
 	
 	@Test(expected=ExceedAdminUserException.class)
 	public void create_exceedAdminUser() throws Exception {
-		userService.create(createUser("userId1"));
-		userService.create(createUser("userId2"));
-		userService.create(createUser("userId3"));
-		userService.create(createUser("userId4"));
+		when(userDao.findUser("sanjigi")).thenReturn(null);
+		when(userDao.countAdminUser()).thenReturn(3);
+		userService.create(createUser("sanjigi"));
 	}
 
 }

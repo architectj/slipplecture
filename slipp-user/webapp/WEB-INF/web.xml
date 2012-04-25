@@ -4,6 +4,17 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 	<display-name>my webapp</display-name>
 	
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+		  classpath:user.xml
+		</param-value>
+	</context-param>	
+	
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	
 	<!-- Ensure UTF-8 character encoding is used -->
 	<filter>
 		<filter-name>encodingFilter</filter-name>

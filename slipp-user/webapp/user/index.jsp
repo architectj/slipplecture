@@ -5,7 +5,7 @@
 <%@ include file="loginCheck.jsp"%>
 
 <%
-	UserService service = new UserService();
+	UserService service = UserServiceHelper.getUserService(application);
 	List<User> users = service.findUserList();
 %><!DOCTYPE html>
 <html>

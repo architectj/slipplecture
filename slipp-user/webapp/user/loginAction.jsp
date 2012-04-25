@@ -6,7 +6,7 @@
 		String password = request.getParameter("password");
 
 		//모델에 로그인 작업을 위임한다.
-		UserService service = new UserService();
+		UserService service = UserServiceHelper.getUserService(application);
 		service.login(userId, password);
 
 		//정상적으로 로그인 되었을 경우 세션에 사용자 아이디 저장.
