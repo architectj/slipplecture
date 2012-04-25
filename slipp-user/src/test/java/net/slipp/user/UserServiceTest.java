@@ -1,9 +1,6 @@
 package net.slipp.user;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
-
-import java.sql.SQLException;
 
 import org.junit.Before;
 import org.junit.Test;

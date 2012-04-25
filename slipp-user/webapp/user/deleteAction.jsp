@@ -2,10 +2,10 @@
 <%@page import="net.slipp.user.*"%>
 <%@ include file="loginCheck.jsp"%>
 <%
-	String userId = request.getParameter("userId");
+    String userId = request.getParameter("userId");
 
-	UserService service = new UserService();
-	service.remove(userId);
+    UserService service = UserServiceHelper.getUserService(application);
+    service.remove(userId);
 
-	response.sendRedirect("index.jsp");
+    response.sendRedirect("index.jsp");
 %>

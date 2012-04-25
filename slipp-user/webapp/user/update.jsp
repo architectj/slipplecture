@@ -3,9 +3,9 @@
 	file="/WEB-INF/jsp/include/tags.jspf"%><%@ include
 	file="loginCheck.jsp"%>
 <%
-	String userId = request.getParameter("userId");
-	UserService service = new UserService();
-	User user = service.findUser(userId);
+    String userId = request.getParameter("userId");
+    UserService service = UserServiceHelper.getUserService(application);
+    User user = service.findUser(userId);
 %><!DOCTYPE html>
 <html>
 <head>
@@ -15,7 +15,7 @@
 	<c:set var="user" value="<%=user%>" />
 	<div id="main">
 		<form name="userForm" method="post" action="updateAction.jsp">
-			<input type="hidden" name="userId" value="${user.userId}" />
+			<input type="hidden" name="userId" value="${user.userId}" /> 
 			<input type="hidden" name="isAdmin" value="${user.admin}" />
 			<table>
 				<tr>
