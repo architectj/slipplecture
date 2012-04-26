@@ -4,19 +4,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import net.slipp.user.JdbcUserDao;
 import net.slipp.user.User;
 
-public class UpdateJdbcTemplate {
-	public void update(JdbcUserDao userDao, User user) throws SQLException {
+public abstract class UpdateJdbcTemplate {
+	public void update(User user) throws SQLException {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		try {
-			StringBuffer updateQuery = userDao.createQueryForUpdate();
+			StringBuffer updateQuery = createQueryForUpdate();
 
 			con = ConnectionManager.getConnection();
 			pstmt = con.prepareStatement(updateQuery.toString());
-			userDao.setValuesForUpdate(user, pstmt);
+			setValuesForUpdate(user, pstmt);
 
 			pstmt.executeUpdate();
 		} finally {
@@ -29,4 +28,9 @@ public class UpdateJdbcTemplate {
 			}
 		}
 	}
+	
+	public abstract void setValuesForUpdate(User user, PreparedStatement pstmt)
+			throws SQLException;
+	
+	public abstract StringBuffer createQueryForUpdate();
 }

@@ -7,11 +7,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
-
 import net.slipp.support.jdbc.ConnectionManager;
 import net.slipp.support.jdbc.InsertJdbcTemplate;
 import net.slipp.support.jdbc.UpdateJdbcTemplate;
+
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class JdbcUserDao implements UserDao {
@@ -45,24 +45,25 @@ public class JdbcUserDao implements UserDao {
 	 */
 	@Override
 	public void update(User user) throws SQLException {
-		UpdateJdbcTemplate jdbcTemplate = new UpdateJdbcTemplate();
-		jdbcTemplate.update(this, user);
+		UpdateJdbcTemplate jdbcTemplate = new UpdateJdbcTemplate() {
+			public void setValuesForUpdate(User user, PreparedStatement pstmt)
+					throws SQLException {
+				pstmt.setString(1, user.getName());
+				pstmt.setString(2, user.getEmail());
+				pstmt.setString(3, user.getUserId());
+			}
+
+			public StringBuffer createQueryForUpdate() {
+				StringBuffer updateQuery = new StringBuffer();
+				updateQuery.append("UPDATE USERS SET ");
+				updateQuery.append("name=?, email=?");
+				updateQuery.append("WHERE userid=? ");
+				return updateQuery;
+			}
+		};
+		jdbcTemplate.update(user);
 	}
 
-	public void setValuesForUpdate(User user, PreparedStatement pstmt)
-			throws SQLException {
-		pstmt.setString(1, user.getName());
-		pstmt.setString(2, user.getEmail());
-		pstmt.setString(3, user.getUserId());
-	}
-
-	public StringBuffer createQueryForUpdate() {
-		StringBuffer updateQuery = new StringBuffer();
-		updateQuery.append("UPDATE USERS SET ");
-		updateQuery.append("name=?, email=?");
-		updateQuery.append("WHERE userid=? ");
-		return updateQuery;
-	}
 
 	/* (non-Javadoc)
 	 * @see net.slipp.user.IUserDao#remove(java.lang.String)
