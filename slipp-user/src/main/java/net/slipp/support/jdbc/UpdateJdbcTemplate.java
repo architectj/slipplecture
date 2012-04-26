@@ -4,15 +4,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public abstract class UpdateJdbcTemplate {
-	public void update() throws SQLException {
+public class UpdateJdbcTemplate {
+	public void update(StringBuffer query, PreparedStatementSetter pss) throws SQLException {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		try {
-			StringBuffer updateQuery = createQuery();
 			con = ConnectionManager.getConnection();
-			pstmt = con.prepareStatement(updateQuery.toString());
-			setValues(pstmt);
+			pstmt = con.prepareStatement(query.toString());
+			pss.setValues(pstmt);
 
 			pstmt.executeUpdate();
 		} finally {
@@ -25,9 +24,4 @@ public abstract class UpdateJdbcTemplate {
 			}
 		}
 	}
-	
-	public abstract void setValues(PreparedStatement pstmt)
-			throws SQLException;
-	
-	public abstract StringBuffer createQuery();
 }

@@ -9,6 +9,7 @@ import java.util.List;
 
 import net.slipp.support.jdbc.ConnectionManager;
 import net.slipp.support.jdbc.JdbcTemplate;
+import net.slipp.support.jdbc.PreparedStatementSetter;
 import net.slipp.support.jdbc.UpdateJdbcTemplate;
 
 import org.springframework.stereotype.Repository;
@@ -20,24 +21,22 @@ public class JdbcUserDao implements UserDao {
 	 */
 	@Override
 	public void create(final User user) throws SQLException {
-		UpdateJdbcTemplate jdbcTemplate = new UpdateJdbcTemplate() {
-			public void setValues(PreparedStatement pstmt)
-					throws SQLException {
+		UpdateJdbcTemplate jdbcTemplate = new UpdateJdbcTemplate();
+		StringBuffer insertQuery = new StringBuffer();
+		insertQuery.append("INSERT INTO USERS VALUES ");
+		insertQuery.append("(?, ?, ?, ?, ?)");
+		
+		PreparedStatementSetter pss = new PreparedStatementSetter() {
+			@Override
+			public void setValues(PreparedStatement pstmt) throws SQLException {
 				pstmt.setString(1, user.getUserId());
 				pstmt.setString(2, user.getPassword());
 				pstmt.setString(3, user.getName());
 				pstmt.setString(4, user.getEmail());
 				pstmt.setBoolean(5, user.isAdmin());
 			}
-
-			public StringBuffer createQuery() {
-				StringBuffer insertQuery = new StringBuffer();
-				insertQuery.append("INSERT INTO USERS VALUES ");
-				insertQuery.append("(?, ?, ?, ?, ?)");
-				return insertQuery;
-			}
 		};
-		jdbcTemplate.update();
+		jdbcTemplate.update(insertQuery, pss);
 	}
 
 	/* (non-Javadoc)
