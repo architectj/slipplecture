@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.slipp.support.jdbc.ConnectionManager;
-import net.slipp.support.jdbc.InsertJdbcTemplate;
 import net.slipp.support.jdbc.UpdateJdbcTemplate;
 
 import org.springframework.stereotype.Repository;
@@ -19,9 +18,9 @@ public class JdbcUserDao implements UserDao {
 	 * @see net.slipp.user.IUserDao#create(net.slipp.user.User)
 	 */
 	@Override
-	public void create(User user) throws SQLException {
-		InsertJdbcTemplate jdbcTemplate = new InsertJdbcTemplate() {
-			public void setValuesForInsert(User user, PreparedStatement pstmt)
+	public void create(final User user) throws SQLException {
+		UpdateJdbcTemplate jdbcTemplate = new UpdateJdbcTemplate() {
+			public void setValues(PreparedStatement pstmt)
 					throws SQLException {
 				pstmt.setString(1, user.getUserId());
 				pstmt.setString(2, user.getPassword());
@@ -30,30 +29,30 @@ public class JdbcUserDao implements UserDao {
 				pstmt.setBoolean(5, user.isAdmin());
 			}
 
-			public StringBuffer createQueryForInsert() {
+			public StringBuffer createQuery() {
 				StringBuffer insertQuery = new StringBuffer();
 				insertQuery.append("INSERT INTO USERS VALUES ");
 				insertQuery.append("(?, ?, ?, ?, ?)");
 				return insertQuery;
 			}
 		};
-		jdbcTemplate.create(user);
+		jdbcTemplate.update();
 	}
 
 	/* (non-Javadoc)
 	 * @see net.slipp.user.IUserDao#update(net.slipp.user.User)
 	 */
 	@Override
-	public void update(User user) throws SQLException {
+	public void update(final User user) throws SQLException {
 		UpdateJdbcTemplate jdbcTemplate = new UpdateJdbcTemplate() {
-			public void setValuesForUpdate(User user, PreparedStatement pstmt)
+			public void setValues(PreparedStatement pstmt)
 					throws SQLException {
 				pstmt.setString(1, user.getName());
 				pstmt.setString(2, user.getEmail());
 				pstmt.setString(3, user.getUserId());
 			}
 
-			public StringBuffer createQueryForUpdate() {
+			public StringBuffer createQuery() {
 				StringBuffer updateQuery = new StringBuffer();
 				updateQuery.append("UPDATE USERS SET ");
 				updateQuery.append("name=?, email=?");
@@ -61,7 +60,7 @@ public class JdbcUserDao implements UserDao {
 				return updateQuery;
 			}
 		};
-		jdbcTemplate.update(user);
+		jdbcTemplate.update();
 	}
 
 
@@ -69,28 +68,22 @@ public class JdbcUserDao implements UserDao {
 	 * @see net.slipp.user.IUserDao#remove(java.lang.String)
 	 */
 	@Override
-	public void remove(String userId) throws SQLException {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		try {
-			StringBuffer removeQuery = new StringBuffer();
-			removeQuery.append("DELETE FROM USERS ");
-			removeQuery.append("WHERE userid=? ");
-
-			con = ConnectionManager.getConnection();
-			pstmt = con.prepareStatement(removeQuery.toString());
-			pstmt.setString(1, userId);
-
-			pstmt.executeUpdate();
-		} finally {
-			if (pstmt != null) {
-				pstmt.close();
+	public void remove(final String userId) throws SQLException {
+		UpdateJdbcTemplate jdbcTemplate = new UpdateJdbcTemplate() {
+			@Override
+			public void setValues(PreparedStatement pstmt) throws SQLException {
+				pstmt.setString(1, userId);
 			}
-
-			if (con != null) {
-				con.close();
+			
+			@Override
+			public StringBuffer createQuery() {
+				StringBuffer removeQuery = new StringBuffer();
+				removeQuery.append("DELETE FROM USERS ");
+				removeQuery.append("WHERE userid=? ");
+				return removeQuery;
 			}
-		}
+		};
+		jdbcTemplate.update();
 	}
 
 	/* (non-Javadoc)
