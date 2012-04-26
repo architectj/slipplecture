@@ -7,39 +7,37 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.slipp.support.jdbc.ConnectionManager;
+import org.springframework.stereotype.Repository;
 
+import net.slipp.support.jdbc.ConnectionManager;
+import net.slipp.support.jdbc.InsertJdbcTemplate;
+import net.slipp.support.jdbc.UpdateJdbcTemplate;
+
+@Repository
 public class JdbcUserDao implements UserDao {
 	/* (non-Javadoc)
 	 * @see net.slipp.user.IUserDao#create(net.slipp.user.User)
 	 */
 	@Override
 	public void create(User user) throws SQLException {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		try {
-			StringBuffer insertQuery = new StringBuffer();
-			insertQuery.append("INSERT INTO USERS VALUES ");
-			insertQuery.append("(?, ?, ?, ?, ?)");
-
-			con = ConnectionManager.getConnection();
-			pstmt = con.prepareStatement(insertQuery.toString());
-			pstmt.setString(1, user.getUserId());
-			pstmt.setString(2, user.getPassword());
-			pstmt.setString(3, user.getName());
-			pstmt.setString(4, user.getEmail());
-			pstmt.setBoolean(5, user.isAdmin());
-
-			pstmt.executeUpdate();
-		} finally {
-			if (pstmt != null) {
-				pstmt.close();
+		InsertJdbcTemplate jdbcTemplate = new InsertJdbcTemplate() {
+			public void setValuesForInsert(User user, PreparedStatement pstmt)
+					throws SQLException {
+				pstmt.setString(1, user.getUserId());
+				pstmt.setString(2, user.getPassword());
+				pstmt.setString(3, user.getName());
+				pstmt.setString(4, user.getEmail());
+				pstmt.setBoolean(5, user.isAdmin());
 			}
 
-			if (con != null) {
-				con.close();
+			public StringBuffer createQueryForInsert() {
+				StringBuffer insertQuery = new StringBuffer();
+				insertQuery.append("INSERT INTO USERS VALUES ");
+				insertQuery.append("(?, ?, ?, ?, ?)");
+				return insertQuery;
 			}
-		}
+		};
+		jdbcTemplate.create(user);
 	}
 
 	/* (non-Javadoc)
@@ -47,30 +45,23 @@ public class JdbcUserDao implements UserDao {
 	 */
 	@Override
 	public void update(User user) throws SQLException {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		try {
-			StringBuffer updateQuery = new StringBuffer();
-			updateQuery.append("UPDATE USERS SET ");
-			updateQuery.append("name=?, email=?");
-			updateQuery.append("WHERE userid=? ");
+		UpdateJdbcTemplate jdbcTemplate = new UpdateJdbcTemplate();
+		jdbcTemplate.update(this, user);
+	}
 
-			con = ConnectionManager.getConnection();
-			pstmt = con.prepareStatement(updateQuery.toString());
-			pstmt.setString(1, user.getName());
-			pstmt.setString(2, user.getEmail());
-			pstmt.setString(3, user.getUserId());
+	public void setValuesForUpdate(User user, PreparedStatement pstmt)
+			throws SQLException {
+		pstmt.setString(1, user.getName());
+		pstmt.setString(2, user.getEmail());
+		pstmt.setString(3, user.getUserId());
+	}
 
-			pstmt.executeUpdate();
-		} finally {
-			if (pstmt != null) {
-				pstmt.close();
-			}
-
-			if (con != null) {
-				con.close();
-			}
-		}
+	public StringBuffer createQueryForUpdate() {
+		StringBuffer updateQuery = new StringBuffer();
+		updateQuery.append("UPDATE USERS SET ");
+		updateQuery.append("name=?, email=?");
+		updateQuery.append("WHERE userid=? ");
+		return updateQuery;
 	}
 
 	/* (non-Javadoc)

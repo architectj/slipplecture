@@ -23,5 +23,11 @@ public class UserDaoTest {
 		
 		User actual = dut.findUser(expected.getUserId());
 		assertThat(actual, is(expected));
+		
+		expected.setName("name2");
+		expected.setEmail("java@sk.com");
+		dut.update(expected);
+		actual = dut.findUser(expected.getUserId());
+		assertThat(actual, is(expected));
 	}
 }
