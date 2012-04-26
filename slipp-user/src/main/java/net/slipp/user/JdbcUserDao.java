@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.slipp.support.jdbc.ConnectionManager;
+import net.slipp.support.jdbc.JdbcTemplate;
 import net.slipp.support.jdbc.UpdateJdbcTemplate;
 
 import org.springframework.stereotype.Repository;
@@ -90,42 +91,35 @@ public class JdbcUserDao implements UserDao {
 	 * @see net.slipp.user.IUserDao#findUser(java.lang.String)
 	 */
 	@Override
-	public User findUser(String userId) throws SQLException {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try {
-			StringBuffer findQuery = new StringBuffer();
-			findQuery.append("SELECT ");
-			findQuery.append("userId, password, name, email, isAdmin ");
-			findQuery.append("FROM USERS ");
-			findQuery.append("WHERE userid=? ");
-
-			con = ConnectionManager.getConnection();
-			pstmt = con.prepareStatement(findQuery.toString());
-			pstmt.setString(1, userId);
-
-			rs = pstmt.executeQuery();
-
-			User user = null;
-			if (rs.next()) {
-				user = new User(rs.getString("userId"), rs.getString("password"), rs.getString("name"),
-						rs.getString("email"), rs.getBoolean("isAdmin"));
+	public User findUser(final String userId) throws SQLException {
+		JdbcTemplate jdbcTemplate = new JdbcTemplate() {
+			public User mapRow(ResultSet rs) throws SQLException {
+				User user = null;
+				if (rs.next()) {
+					user = new User(rs.getString("userId"), rs.getString("password"), rs.getString("name"),
+							rs.getString("email"), rs.getBoolean("isAdmin"));
+				}
+				return user;
 			}
 
-			return user;
-		} finally {
-			if (rs != null) {
-				rs.close();
+			public void setValues(PreparedStatement pstmt)
+					throws SQLException {
+				pstmt.setString(1, userId);
 			}
-			if (pstmt != null) {
-				pstmt.close();
+
+			public StringBuffer createQuery() {
+				StringBuffer findQuery = new StringBuffer();
+				findQuery.append("SELECT ");
+				findQuery.append("userId, password, name, email, isAdmin ");
+				findQuery.append("FROM USERS ");
+				findQuery.append("WHERE userid=? ");
+				return findQuery;
 			}
-			if (con != null) {
-				con.close();
-			}
-		}
+		};
+		
+		return (User)jdbcTemplate.executeQuery();
 	}
+
 
 	/* (non-Javadoc)
 	 * @see net.slipp.user.IUserDao#findUserList()
