@@ -22,10 +22,7 @@ public class JdbcUserDao implements UserDao {
 	@Override
 	public void create(final User user) throws SQLException {
 		UpdateJdbcTemplate jdbcTemplate = new UpdateJdbcTemplate();
-		StringBuffer insertQuery = new StringBuffer();
-		insertQuery.append("INSERT INTO USERS VALUES ");
-		insertQuery.append("(?, ?, ?, ?, ?)");
-		
+		String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?, ?)";
 		PreparedStatementSetter pss = new PreparedStatementSetter() {
 			@Override
 			public void setValues(PreparedStatement pstmt) throws SQLException {
@@ -36,7 +33,7 @@ public class JdbcUserDao implements UserDao {
 				pstmt.setBoolean(5, user.isAdmin());
 			}
 		};
-		jdbcTemplate.update(insertQuery, pss);
+		jdbcTemplate.update(sql, pss);
 	}
 
 	/* (non-Javadoc)
@@ -44,23 +41,17 @@ public class JdbcUserDao implements UserDao {
 	 */
 	@Override
 	public void update(final User user) throws SQLException {
-		UpdateJdbcTemplate jdbcTemplate = new UpdateJdbcTemplate() {
-			public void setValues(PreparedStatement pstmt)
-					throws SQLException {
-				pstmt.setString(1, user.getName());
-				pstmt.setString(2, user.getEmail());
-				pstmt.setString(3, user.getUserId());
-			}
-
-			public StringBuffer createQuery() {
-				StringBuffer updateQuery = new StringBuffer();
-				updateQuery.append("UPDATE USERS SET ");
-				updateQuery.append("name=?, email=?");
-				updateQuery.append("WHERE userid=? ");
-				return updateQuery;
-			}
-		};
-		jdbcTemplate.update();
+		UpdateJdbcTemplate jdbcTemplate = new UpdateJdbcTemplate();
+		String sql = "UPDATE USERS SET name=?, email=? WHERE userId=?";
+		PreparedStatementSetter pss = new PreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement pstmt) throws SQLException {
+                pstmt.setString(1, user.getName());
+                pstmt.setString(2, user.getEmail());
+                pstmt.setString(3, user.getUserId());                
+            }
+        };
+		jdbcTemplate.update(sql, pss);
 	}
 
 
@@ -69,21 +60,15 @@ public class JdbcUserDao implements UserDao {
 	 */
 	@Override
 	public void remove(final String userId) throws SQLException {
-		UpdateJdbcTemplate jdbcTemplate = new UpdateJdbcTemplate() {
-			@Override
-			public void setValues(PreparedStatement pstmt) throws SQLException {
-				pstmt.setString(1, userId);
-			}
-			
-			@Override
-			public StringBuffer createQuery() {
-				StringBuffer removeQuery = new StringBuffer();
-				removeQuery.append("DELETE FROM USERS ");
-				removeQuery.append("WHERE userid=? ");
-				return removeQuery;
-			}
-		};
-		jdbcTemplate.update();
+		UpdateJdbcTemplate jdbcTemplate = new UpdateJdbcTemplate();
+		String sql = "DELETE FROM USERS WHERE userId=?";
+		PreparedStatementSetter pss = new PreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement pstmt) throws SQLException {
+                pstmt.setString(1, userId);
+            }
+        };
+		jdbcTemplate.update(sql, pss);
 	}
 
 	/* (non-Javadoc)
