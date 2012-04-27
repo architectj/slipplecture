@@ -1,7 +1,15 @@
 package net.slipp.user;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+
+@Entity(name="USERS")
 public class User {
+	@Id
 	private String userId = null;
+	@Column(length=30, nullable=false)
 	private String password = null;
 	private String name = null;
 	private String email = null;

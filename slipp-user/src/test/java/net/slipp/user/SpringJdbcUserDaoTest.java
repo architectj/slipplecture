@@ -14,11 +14,11 @@ import org.springframework.jdbc.datasource.init.DatabasePopulator;
 import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:infrastructure.xml")
-public class SpringJdbcUserDaoTest {
+public class SpringJdbcUserDaoTest extends AbstractTransactionalJUnit4SpringContextTests {
 	@Autowired
 	private DataSource dataSource;
 	
@@ -28,27 +28,21 @@ public class SpringJdbcUserDaoTest {
 	public void setUp() throws Exception {
 		dut = new SpringJdbcUserDao();
 		dut.setDataSource(dataSource);
-		DatabasePopulatorUtils.execute(databasePopulator(), dataSource);
+		dut.afterPropertiesSet();
+		
+		deleteFromTables("USERS");
 	}
 	
-	private static DatabasePopulator databasePopulator() {
-		ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
-		populator.addScript(new ClassPathResource("user.sql"));
-		return populator;
-	}
-
 	@Test
 	public void crud() throws Exception {
 		User expected = new User("userId", "password", "name", "javajigi@slipp.net", true);
-		dut.remove(expected.getUserId());
-
 		dut.create(expected);
 		
 		User actual = dut.findUser(expected.getUserId());
 		assertThat(actual, is(expected));
 		
-		expected.setName("name2");
-		expected.setEmail("java@sk.com");
+		expected.setName("name3");
+		expected.setEmail("javajigi@sk.com");
 		dut.update(expected);
 		actual = dut.findUser(expected.getUserId());
 		assertThat(actual, is(expected));
