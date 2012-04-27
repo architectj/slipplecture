@@ -14,7 +14,7 @@ import net.slipp.support.jdbc.UpdateJdbcTemplate;
 
 import org.springframework.stereotype.Repository;
 
-@Repository
+@Repository("jdbcUserDao")
 public class JdbcUserDao implements UserDao {
 	/* (non-Javadoc)
 	 * @see net.slipp.user.IUserDao#create(net.slipp.user.User)

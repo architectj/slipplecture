@@ -4,10 +4,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import net.slipp.support.jdbc.AbstractPlanetDaoSupport;
 
-public class SpringJdbcUserDao extends JdbcDaoSupport implements UserDao {
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
+
+@Repository("springJdbcUserDao")
+public class SpringJdbcUserDao extends AbstractPlanetDaoSupport 
+	implements UserDao {
 
 	@Override
 	public void create(User user) throws SQLException {

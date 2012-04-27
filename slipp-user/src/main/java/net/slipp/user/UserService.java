@@ -3,16 +3,17 @@ package net.slipp.user;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
 	private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 	
-	@Autowired
+	@Resource (name="springJdbcUserDao")
 	private UserDao userDao;
 	
 	public UserService() {
