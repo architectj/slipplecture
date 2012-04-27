@@ -15,9 +15,9 @@ public class JpaUserDao implements UserDao {
 	private EntityManager em;
 	
 	public void setEntityManager(EntityManager em) {
-		this.em = em;
-	}
-
+        this.em = em;
+    }
+	
 	@Override
 	public void create(User user) throws SQLException {
 		em.persist(user);

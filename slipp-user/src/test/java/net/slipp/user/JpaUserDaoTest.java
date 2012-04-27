@@ -5,18 +5,17 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 @ContextConfiguration("classpath:user.xml")
 public class JpaUserDaoTest extends AbstractTransactionalJUnit4SpringContextTests {
-	@Autowired
+    @Autowired
 	private JpaUserDao dut;
-	
+    
 	@Test
-	@Transactional(propagation=Propagation.NOT_SUPPORTED)
+	@Rollback(false)
 	public void crud() throws Exception {
 		User expected = new User("userId", "password", "name", "javajigi@slipp.net", true);
 		dut.create(expected);
