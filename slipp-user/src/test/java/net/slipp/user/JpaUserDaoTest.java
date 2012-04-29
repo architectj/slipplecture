@@ -29,4 +29,10 @@ public class JpaUserDaoTest extends AbstractTransactionalJUnit4SpringContextTest
 		actual = dut.findUser(expected.getUserId());
 		assertThat(actual, is(expected));
 	}
+	
+	@Test
+    public void findUser() throws Exception {
+        User result = dut.findUser("userId");
+        assertThat(result, is(notNullValue()));
+    }
 }
