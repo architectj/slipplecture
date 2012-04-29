@@ -28,6 +28,9 @@ public class JpaUserDaoTest extends AbstractTransactionalJUnit4SpringContextTest
 		dut.update(expected);
 		actual = dut.findUser(expected.getUserId());
 		assertThat(actual, is(expected));
+		
+		assertThat(dut.findUserList().size(), is(1));
+		assertThat(dut.countAdminUser(), is(1));
 	}
 	
 	@Test

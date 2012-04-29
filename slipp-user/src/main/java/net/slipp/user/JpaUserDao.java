@@ -49,9 +49,9 @@ public class JpaUserDao implements UserDao {
 	public int countAdminUser() throws SQLException {
 		String hql = 
 				"select count(u.userId) from User u where isAdmin=true";
-		TypedQuery<Integer> query =
-				em.createQuery(hql, Integer.class);
-		return query.getSingleResult();
+		TypedQuery<Long> query =
+				em.createQuery(hql, Long.class);
+		return query.getSingleResult().intValue();
 	}
 	
 	

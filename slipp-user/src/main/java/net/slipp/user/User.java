@@ -4,8 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-
-@Entity(name="USERS")
+@Entity
 public class User {
 	@Id
 	private String userId = null;
@@ -14,6 +13,9 @@ public class User {
 	private String name = null;
 	private String email = null;
 	private boolean isAdmin = false;
+	
+	public User() {
+	}
 
 	public User(String userId, String password, String name, String email,
 			boolean isAdmin) {
