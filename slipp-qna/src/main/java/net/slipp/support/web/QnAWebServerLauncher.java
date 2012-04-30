@@ -6,7 +6,7 @@ public class QnAWebServerLauncher {
 		final String webappConfiguration = "src/main/resources/jetty-web.xml";
 		final String targetClasses = "target/classes";
 		final String webXml = webapp + "/WEB-INF/web.xml";
-		final String springXml = webapp + "/WEB-INF/spring-servlet.xml";
+		final String springXml = webapp + "/WEB-INF/slipp-servlet.xml";
 		final String sitemeshXml = webapp + "/WEB-INF/decorators.xml";
 
 		WebServer server = new WebServer(port, webapp, webappConfiguration, targetClasses, webXml, springXml,
