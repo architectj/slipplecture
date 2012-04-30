@@ -8,16 +8,17 @@ import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.google.common.collect.Lists;
 
 @Service
 @Transactional
 public class UserService {
 	private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 	
-	@Resource (name="springJdbcUserDao")
-	private UserDao userDao;
+	@Resource (name="userRepository")
+	private UserRepository userRepository;
 	
 	public UserService() {
 	}
@@ -27,27 +28,27 @@ public class UserService {
 			throw new ExistedUserException(user.getUserId() + "는 이미 존재하는 아이디입니다.");
 		}
 		
-		if (getUserDAO().countAdminUser() >= 3) {
+		if (userRepository.countAdminUser() >= 3) {
 			throw new ExceedAdminUserException();
 		}
 
-		getUserDAO().create(user);
+		userRepository.save(user);
 	}
 
 	public void update(User user) throws SQLException {
-		getUserDAO().update(user);
+		userRepository.save(user);
 	}
 
 	public void remove(String userId) throws SQLException {
-		getUserDAO().remove(userId);
+		userRepository.delete(userId);
 	}
 
 	public User findUser(String userId) throws SQLException {
-		return getUserDAO().findUser(userId);
+		return userRepository.findOne(userId);
 	}
 
 	public List<User> findUserList() throws SQLException {
-		return getUserDAO().findUserList();
+		return Lists.newArrayList(userRepository.findAll());
 	}
 
 	public boolean login(String userId, String password) throws SQLException, PasswordMismatchException {
@@ -57,13 +58,5 @@ public class UserService {
 			throw new PasswordMismatchException("비밀번호가 일치하지 않습니다.");
 		}
 		return true;
-	}
-
-	private UserDao getUserDAO() {
-		return userDao;
-	}
-
-	public void setUserDao(UserDao userDao) {
-		this.userDao = userDao;
 	}
 }

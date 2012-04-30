@@ -36,6 +36,12 @@ public class UserRepositoryTest extends AbstractTransactionalJUnit4SpringContext
 		Iterable<User> users = dut.findAll();
 		List<User> newUsers = Lists.newArrayList(users);
 		assertThat(newUsers.size(), is(1));
+		
+		long result = dut.countAdminUser();
+		assertThat(result, is(1L));
+		
+		List<User> usersByName = dut.findByName("name3");
+		assertThat(usersByName.size(), is(1));
 	}
 
 }
