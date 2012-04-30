@@ -1,6 +1,6 @@
 package net.slipp.support.web;
 
-public class WebServerLauncher {
+public class QnAWebServerLauncher {
 	public static WebServer createDefaultWebServer(int port) {
 		final String webapp = "webapp";
 		final String webappConfiguration = "src/main/resources/jetty-web.xml";
