@@ -14,7 +14,6 @@
 		<org.springframework.version>3.1.1.RELEASE</org.springframework.version>
 		<org.springframework.security.version>3.1.0.RELEASE</org.springframework.security.version>
 		<jetty.version>6.1.22</jetty.version>
-		<jpametamodel.generated.dir>${basedir}/target/generated-sources/jpametamodel</jpametamodel.generated.dir>
 	</properties>
 
 	<dependencies>
