@@ -18,7 +18,7 @@ public class UserServiceTest {
 	@Before
 	public void setUp() throws Exception {
 		userService = new UserService();
-		userService.setUserDao(userDao);
+		// userService.setUserDao(userDao);
 	}
 	
 	@Test
