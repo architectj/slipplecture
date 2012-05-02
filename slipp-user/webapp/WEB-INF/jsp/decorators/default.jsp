@@ -6,7 +6,7 @@
   <head>
     <title>사용자 관리</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<link rel="stylesheet" media="screen"  href="/stylesheets/main.css">
+	<link rel="stylesheet" media="screen"  href="/resources/stylesheets/main.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>    
     <decorator:head />
   </head>
@@ -17,7 +17,7 @@
             </div>
             <ul id="tools">
                 <li>
-                    <a href="/user/login.jsp">Log in</a>
+                    <a href="/user/login/form">Log in</a>
                 </li>
             </ul>
             <div id="title">

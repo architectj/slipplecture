@@ -1,6 +1,5 @@
 package net.slipp.user;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -23,7 +22,7 @@ public class UserService {
 	public UserService() {
 	}
 
-	public void create(User user) throws SQLException, ExistedUserException, ExceedAdminUserException {
+	public void create(User user) throws ExistedUserException, ExceedAdminUserException {
 		if (findUser(user.getUserId()) != null) {
 			throw new ExistedUserException(user.getUserId() + "는 이미 존재하는 아이디입니다.");
 		}
@@ -35,23 +34,23 @@ public class UserService {
 		userRepository.save(user);
 	}
 
-	public void update(User user) throws SQLException {
+	public void update(User user) {
 		userRepository.save(user);
 	}
 
-	public void remove(String userId) throws SQLException {
+	public void remove(String userId) {
 		userRepository.delete(userId);
 	}
 
-	public User findUser(String userId) throws SQLException {
+	public User findUser(String userId) {
 		return userRepository.findOne(userId);
 	}
 
-	public List<User> findUserList() throws SQLException {
+	public List<User> findUserList() {
 		return Lists.newArrayList(userRepository.findAll());
 	}
 
-	public boolean login(String userId, String password) throws SQLException, PasswordMismatchException {
+	public boolean login(String userId, String password) throws PasswordMismatchException {
 		User user = findUser(userId);
 		logger.debug("findUser : {}", user);
 		if (!user.isMatchPassword(password)) {
