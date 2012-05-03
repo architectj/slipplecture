@@ -3,6 +3,7 @@ package net.slipp.domain.qna;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,6 +15,7 @@ import javax.persistence.TemporalType;
 import net.slipp.domain.CreatedAndUpdatedDateEntityListener;
 import net.slipp.domain.HasCreatedAndUpdatedDate;
 
+@Entity
 @EntityListeners({ CreatedAndUpdatedDateEntityListener.class })
 public class Answer implements HasCreatedAndUpdatedDate {
 	@Id
