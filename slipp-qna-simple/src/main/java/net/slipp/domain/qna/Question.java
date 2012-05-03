@@ -2,6 +2,7 @@ package net.slipp.domain.qna;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -26,6 +27,7 @@ import javax.persistence.Transient;
 import net.slipp.domain.CreatedDateEntityListener;
 import net.slipp.domain.HasCreatedDate;
 import net.slipp.domain.user.User;
+import net.slipp.repository.qna.TagRepository;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -196,6 +198,42 @@ public class Question implements HasCreatedDate {
 		this.title = newQuestion.title;
 		this.contentsHolder = newQuestion.contentsHolder;
 		this.plainTags = newQuestion.plainTags;
+	}
+	
+	public void initializeTags(String plainTags, 
+			TagRepository tagRepository) {
+		String[] parsedTags = parsedTags(plainTags);
+		Set<Tag> newTags = loadTags(parsedTags, tagRepository);
+		addedTags(newTags);
+		removedTags(newTags);
+		tags = newTags;
+	}
+
+	private void removedTags(Set<Tag> newTags) {
+		Set<Tag> removedTags = Sets.difference(tags, newTags);
+		for (Tag tag : removedTags) {
+			tag.detagged();
+		}
+	}
+
+	private void addedTags(Set<Tag> newTags) {
+		Set<Tag> addedTags = Sets.difference(newTags, tags);
+		for (Tag tag : addedTags) {
+			tag.tagged();
+		}
+	}
+
+	private String[] parsedTags(String plainTags) {
+		String[] parsedTags = plainTags.split(" ");
+		return parsedTags;
+	}
+	
+	private Set<Tag> loadTags(String[] parsedTags, TagRepository tagRepository) {
+		Set<Tag> loadTags = new HashSet<Tag>();
+		for (int i = 0; i < parsedTags.length; i++) {
+			loadTags.add(tagRepository.findByName(parsedTags[i]));
+		}
+		return loadTags;
 	}
 
 	@Override

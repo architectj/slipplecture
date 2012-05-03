@@ -33,6 +33,14 @@ public class Tag {
 	public int getTaggedCount() {
 		return taggedCount;
 	}
+	
+	public void tagged() {
+		taggedCount += 1;
+	}
+	
+	public void detagged() {
+		taggedCount -= 1;
+	}
 
 	@Override
 	public String toString() {
