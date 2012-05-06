@@ -4,7 +4,7 @@
 	file="loginCheck.jsp"%>
 <%
     String userId = request.getParameter("userId");
-    UserService service = UserServiceHelper.getUserService(application);
+    UserService service = new UserService();
     User user = service.findUser(userId);
 %><!DOCTYPE html>
 <html>

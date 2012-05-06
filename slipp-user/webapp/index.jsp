@@ -6,7 +6,8 @@
   </head>
   <body>
         <div id="main">
-        여기가 메인입니다.
+        여기가 메인입니다.<br/><br/>
+        <a href="/user">사용자 관리 시스템</a>
         </div>
   </body>
 </html>

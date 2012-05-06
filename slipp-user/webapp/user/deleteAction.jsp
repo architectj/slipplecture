@@ -4,7 +4,7 @@
 <%
     String userId = request.getParameter("userId");
 
-    UserService service = UserServiceHelper.getUserService(application);
+	UserService service = new UserService();
     service.remove(userId);
 
     response.sendRedirect("index.jsp");

@@ -13,7 +13,7 @@ try{
 
 	boolean isAdmin = Boolean.parseBoolean(admin);
 	User user = new User(userId, password, name, email, isAdmin);
-	UserService service = UserServiceHelper.getUserService(application);
+	UserService service = new UserService();
 	service.create(user);
 
 	response.sendRedirect("index.jsp");
