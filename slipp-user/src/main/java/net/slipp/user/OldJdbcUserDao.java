@@ -10,12 +10,12 @@ import java.util.List;
 import net.slipp.support.jdbc.ConnectionManager;
 
 public class OldJdbcUserDao {
-	public void create(User user) throws SQLException {
+	public void create(final User user) throws SQLException {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		try {
-			String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?, ?)";
 			con = ConnectionManager.getConnection();
+			String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?, ?)";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, user.getUserId());
 			pstmt.setString(2, user.getPassword());
@@ -35,12 +35,12 @@ public class OldJdbcUserDao {
 		}
 	}
 
-	public void update(User user) throws SQLException {
+	public void update(final User user) throws SQLException {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		try {
-			String sql = "UPDATE USERS SET name=?, email=? WHERE userid=?";
 			con = ConnectionManager.getConnection();
+			String sql = "UPDATE USERS SET name=?, email=? WHERE userid=?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, user.getName());
 			pstmt.setString(2, user.getEmail());
@@ -58,12 +58,12 @@ public class OldJdbcUserDao {
 		}
 	}
 
-	public void remove(String userId) throws SQLException {
+	public void remove(final String userId) throws SQLException {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		try {
-			String sql = "DELETE FROM USERS WHERE userid=?";
 			con = ConnectionManager.getConnection();
+			String sql = "DELETE FROM USERS WHERE userid=?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, userId);
 
@@ -79,13 +79,13 @@ public class OldJdbcUserDao {
 		}
 	}
 
-	public User findUser(String userId) throws SQLException {
+	public User findUser(final String userId) throws SQLException {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			String sql = "SELECT userId, password, name, email, isAdmin FROM USERS WHERE userid=?";
 			con = ConnectionManager.getConnection();
+			String sql = "SELECT userId, password, name, email, isAdmin FROM USERS WHERE userid=?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, userId);
 
@@ -93,8 +93,12 @@ public class OldJdbcUserDao {
 
 			User user = null;
 			if (rs.next()) {
-				user = new User(rs.getString("userId"), rs.getString("password"), rs.getString("name"),
-						rs.getString("email"), rs.getBoolean("isAdmin"));
+				user = new User(
+						rs.getString("userId"), 
+						rs.getString("password"), 
+						rs.getString("name"),
+						rs.getString("email"), 
+						rs.getBoolean("isAdmin"));
 			}
 
 			return user;
@@ -121,14 +125,18 @@ public class OldJdbcUserDao {
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 
-			List<User> userList = new ArrayList<User>();
+			List<User> users = new ArrayList<User>();
 			while (rs.next()) {
-				User user = new User(rs.getString("userId"), rs.getString("password"), rs.getString("name"),
-						rs.getString("email"), rs.getBoolean("isAdmin"));
-				userList.add(user);
+				User user = new User(
+						rs.getString("userId"), 
+						rs.getString("password"), 
+						rs.getString("name"),
+						rs.getString("email"), 
+						rs.getBoolean("isAdmin"));
+				users.add(user);
 			}
 
-			return userList;
+			return users;
 		} finally {
 			if (rs != null) {
 				rs.close();

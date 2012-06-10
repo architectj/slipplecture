@@ -8,7 +8,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-public class UserDaoTest {
+public class OldJdbcUserDaoTest {
 	private OldJdbcUserDao dut;
 	
 	@Before
@@ -18,7 +18,7 @@ public class UserDaoTest {
 
 	@Test
 	public void crud() throws Exception {
-		User expected = new User("sanjigi", "password", "name", "javajigi@slipp.net", true);
+		User expected = new User("javajigi", "password", "name", "javajigi@slipp.net", true);
 		dut.remove(expected.getUserId());
 
 		dut.create(expected);
@@ -28,10 +28,11 @@ public class UserDaoTest {
 		
 		expected.update("name2", "sanjigi@slipp.net");
 		dut.update(expected);
+		
 		actual = dut.findUser(expected.getUserId());
 		assertThat(actual, is(expected));
 		
 		List<User> users = dut.findUsers();
-		assertThat(users.size(), is(2));
+		assertThat(users.size(), is(1));
 	}
 }
