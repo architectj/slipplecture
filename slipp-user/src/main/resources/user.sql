@@ -10,4 +10,4 @@ CREATE TABLE USERS (
 	PRIMARY KEY               (userId)
 );
 
-INSERT INTO USERS VALUES('javajigi', 'password', '자바지기', 'admin@javajigi.net', true);
+-- INSERT INTO USERS VALUES('javajigi', 'password', '자바지기', 'admin@javajigi.net', true);

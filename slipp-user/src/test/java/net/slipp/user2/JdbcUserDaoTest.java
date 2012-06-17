@@ -23,7 +23,7 @@ public class JdbcUserDaoTest {
 		User expected = new User("javajigi", "password", "name", "javajigi@slipp.net", true);
 		dut.remove(expected.getUserId());
 
-		dut.create(expected);
+		dut.insert(expected);
 		
 		User actual = dut.findUser(expected.getUserId());
 		assertThat(actual, is(expected));

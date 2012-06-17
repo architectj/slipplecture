@@ -10,7 +10,7 @@ import java.util.List;
 import net.slipp.support.jdbc.ConnectionManager;
 
 public class OldJdbcUserDao {
-	public void create(final User user) throws SQLException {
+	public void insert(final User user) throws SQLException {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		try {

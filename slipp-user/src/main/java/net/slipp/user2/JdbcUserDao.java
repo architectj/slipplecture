@@ -1,153 +1,100 @@
 package net.slipp.user2;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.slipp.support.jdbc.ConnectionManager;
 import net.slipp.user.User;
 
 public class JdbcUserDao {
-	public void create(final User user) throws SQLException {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		try {
-			con = ConnectionManager.getConnection();
-			String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?, ?)";
-			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, user.getUserId());
-			pstmt.setString(2, user.getPassword());
-			pstmt.setString(3, user.getName());
-			pstmt.setString(4, user.getEmail());
-			pstmt.setBoolean(5, user.isAdmin());
-
-			pstmt.executeUpdate();
-		} finally {
-			if (pstmt != null) {
-				pstmt.close();
+	public void insert(final User user) throws SQLException {
+		UpdateJdbcTemplate jdbcTemplate = new UpdateJdbcTemplate() {
+			void setValues(PreparedStatement pstmt)
+					throws SQLException {
+				pstmt.setString(1, user.getUserId());
+				pstmt.setString(2, user.getPassword());
+				pstmt.setString(3, user.getName());
+				pstmt.setString(4, user.getEmail());
+				pstmt.setBoolean(5, user.isAdmin());
 			}
-
-			if (con != null) {
-				con.close();
-			}
-		}
+		};
+		String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?, ?)";
+		jdbcTemplate.update(sql);
 	}
 
 	public void update(final User user) throws SQLException {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		try {
-			con = ConnectionManager.getConnection();
-			String sql = "UPDATE USERS SET name=?, email=? WHERE userid=?";
-			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, user.getName());
-			pstmt.setString(2, user.getEmail());
-			pstmt.setString(3, user.getUserId());
-
-			pstmt.executeUpdate();
-		} finally {
-			if (pstmt != null) {
-				pstmt.close();
+		UpdateJdbcTemplate updateJdbcTemplate = new UpdateJdbcTemplate() {
+			void setValues(PreparedStatement pstmt)
+					throws SQLException {
+				pstmt.setString(1, user.getName());
+				pstmt.setString(2, user.getEmail());
+				pstmt.setString(3, user.getUserId());
 			}
-
-			if (con != null) {
-				con.close();
-			}
-		}
+		};
+		String sql = "UPDATE USERS SET name=?, email=? WHERE userid=?";
+		updateJdbcTemplate.update(sql);
 	}
 
 	public void remove(final String userId) throws SQLException {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		try {
-			con = ConnectionManager.getConnection();
-			String sql = "DELETE FROM USERS WHERE userid=?";
-			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, userId);
-
-			pstmt.executeUpdate();
-		} finally {
-			if (pstmt != null) {
-				pstmt.close();
+		UpdateJdbcTemplate updateJdbcTemplate = new UpdateJdbcTemplate() {
+			void setValues(PreparedStatement pstmt) throws SQLException {
+				pstmt.setString(1, userId);				
 			}
-
-			if (con != null) {
-				con.close();
-			}
-		}
+		};
+		String sql = "DELETE FROM USERS WHERE userid=?";
+		updateJdbcTemplate.update(sql);
 	}
 
 	public User findUser(final String userId) throws SQLException {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try {
-			con = ConnectionManager.getConnection();
-			String sql = "SELECT userId, password, name, email, isAdmin FROM USERS WHERE userid=?";
-			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, userId);
-
-			rs = pstmt.executeQuery();
-
-			User user = null;
-			if (rs.next()) {
-				user = new User(
-						rs.getString("userId"), 
-						rs.getString("password"), 
-						rs.getString("name"),
-						rs.getString("email"), 
-						rs.getBoolean("isAdmin"));
+		SelectJdbcTemplate selectJdbcTemplate = new SelectJdbcTemplate() {
+			void setValues(PreparedStatement pstmt)
+					throws SQLException {
+				pstmt.setString(1, userId);
 			}
 
-			return user;
-		} finally {
-			if (rs != null) {
-				rs.close();
+			Object rowMapper(ResultSet rs) throws SQLException {
+				User user = null;
+				if (rs.next()) {
+					user = new User(
+							rs.getString("userId"), 
+							rs.getString("password"), 
+							rs.getString("name"),
+							rs.getString("email"), 
+							rs.getBoolean("isAdmin"));
+				}
+				return user;
 			}
-			if (pstmt != null) {
-				pstmt.close();
-			}
-			if (con != null) {
-				con.close();
-			}
-		}
+		};
+		
+		String sql = "SELECT userId, password, name, email, isAdmin FROM USERS WHERE userid=?";
+		return (User)selectJdbcTemplate.query(sql);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<User> findUsers() throws SQLException {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try {
-			String sql = "SELECT userid, password, name, email, isAdmin FROM USERS";
-			con = ConnectionManager.getConnection();
-			pstmt = con.prepareStatement(sql);
-			rs = pstmt.executeQuery();
-
-			List<User> users = new ArrayList<User>();
-			while (rs.next()) {
-				User user = new User(
-						rs.getString("userId"), 
-						rs.getString("password"), 
-						rs.getString("name"),
-						rs.getString("email"), 
-						rs.getBoolean("isAdmin"));
-				users.add(user);
+		SelectJdbcTemplate selectJdbcTemplate = new SelectJdbcTemplate() {
+			void setValues(PreparedStatement pstmt)
+					throws SQLException {
 			}
 
-			return users;
-		} finally {
-			if (rs != null) {
-				rs.close();
+			Object rowMapper(ResultSet rs) throws SQLException {
+				List<User> users = new ArrayList<User>();
+				while (rs.next()) {
+					User user = new User(
+							rs.getString("userId"), 
+							rs.getString("password"), 
+							rs.getString("name"),
+							rs.getString("email"), 
+							rs.getBoolean("isAdmin"));
+					users.add(user);
+				}
+				return users;
 			}
-			if (pstmt != null) {
-				pstmt.close();
-			}
-			if (con != null) {
-				con.close();
-			}
-		}
+		};
+		
+		String sql = "SELECT userid, password, name, email, isAdmin FROM USERS";
+		return (List<User>)selectJdbcTemplate.query(sql);
 	}
 }
