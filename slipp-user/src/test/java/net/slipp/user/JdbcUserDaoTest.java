@@ -8,12 +8,12 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-public class OldJdbcUserDaoTest {
-	private OldJdbcUserDao dut;
+public class JdbcUserDaoTest {
+	private JdbcUserDao dut;
 	
 	@Before
 	public void setup() {
-		dut = new OldJdbcUserDao();
+		dut = new JdbcUserDao();
 	}
 
 	@Test

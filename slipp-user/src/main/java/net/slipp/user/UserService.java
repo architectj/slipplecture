@@ -45,7 +45,7 @@ public class UserService {
 		return true;
 	}
 
-	private OldJdbcUserDao getUserDAO() {
-		return new OldJdbcUserDao();
+	private JdbcUserDao getUserDAO() {
+		return new JdbcUserDao();
 	}
 }
